@@ -5,17 +5,21 @@
 # SPDX-License-Identifier: MIT
 #
 
+SPL_NAME=imx-boot-mfgtool
 DIR=$(dirname $0)
-FILE=${FUSE_DEST:-${DIR}/fuse.uuu}
-FUSEBIN=${FUSEBIN:-cst-3.3.1/crts/SRK_1_2_3_4_fuse.bin}
+DEF_SRC=cst-3.3.1/crts/SRK_1_2_3_4_fuse.bin
+DEF_DST=${DIR}/fuse.uuu
+
+FILE=${FUSE_DEST:-${DEF_DST}}
+FUSEBIN=${FUSEBIN:-${DEF_SRC}}
 TORADEX=
 
 usage() {
     echo -e "Usage: $0 [-s source_file] [-d destination_file] [-t]
 where:
    -t adds Toradex PIDs for Fastboot in u-boot
-   source_file defaults to cst-3.3.1/crts/SRK_1_2_3_4_fuse.bin
-   destination file defaults to ${DIR}/fuse.uuu
+   source_file defaults to ${DEF_SRC}
+   destination_file defaults to ${DEF_DST}
 " 1>&2
     exit 1
 }
@@ -70,7 +74,7 @@ fi
 uuu_version 1.2.39
 $TORADEX
 
-SDP: boot -f SPL-mfgtool.signed
+SDP: boot -f ${SPL_NAME}.signed
 
 SDPU: delay 1000
 SDPV: write -f u-boot-mfgtool.itb
